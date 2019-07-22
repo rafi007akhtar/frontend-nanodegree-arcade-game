@@ -13,7 +13,7 @@ let Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = 0;
     this.y = Math.random()*(max-min+1)+min;
-    this.speed = 5;
+    this.speed = 100;
 };
 
 // Update the enemy's position, required method for game
@@ -22,12 +22,16 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + dt*100;
+    this.x = this.x + dt * this.speed;
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+Enemy.prototype.checkCollisions = function() {
+  if (this.x === player.x)
+      console.log("collision");
 };
 
 // Now write your own player class
@@ -43,18 +47,24 @@ Player.prototype.update = function(dt) {
     let movey = 78;
     switch (dt) {
         case "left":
-            this.x = this.x - movex;
+            if (this.x > 0)
+                this.x = this.x - movex;
             break;
         case "up":
-            this.y = this.y - movey;
+            if (this.y > -19)
+                this.y = this.y - movey;
+            else this.y = 371;
             break;
         case "right":
-            this.x = this.x + movex;
+            if (this.x < 400)
+                this.x = this.x + movex;
             break;
         case "down":
-            this.y = this.y + movey;
+            if (this.y < 371)
+                this.y = this.y + movey;
             break;
     };
+    console.log(`${this.x}, ${this.y}`)
 };
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -69,13 +79,12 @@ Player.prototype.handleInput = function(keyCode) {
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [];
 setInterval(function() {
-    allEnemies.push(new Enemy());
+    let enemy = new Enemy
+    allEnemies.push(enemy);
+    enemy.checkCollisions();
 }, 1500);
-console.log(allEnemies);
 // Place the player object in a variable called player
 let player = new Player();
-console.log(player);
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
