@@ -40,11 +40,13 @@ Enemy.prototype.render = function() {
 let count = 1;
 Enemy.prototype.checkCollisions = function(player) {
 //    console.log(player.width);
-    if (player.x < this.x + this.width  && player.x + player.width  > this.x &&
-		player.y < this.y + this.height && player.y + player.height > this.y)
-    {
-        console.log(`collision ${count++}`);
-        player.update("init");
+    if (player.y > -19) {
+        if (player.x < this.x + this.width  && player.x + player.width  > this.x &&
+            player.y < this.y + this.height && player.y + player.height > this.y)
+        {
+//            console.log(`collision ${count++}`);
+            player.update("init");
+        }
     }
 };
 
@@ -72,7 +74,11 @@ Player.prototype.update = function(dt) {
         case "up":
             if (this.y > -19)
                 this.y = this.y - movey;
-            else this.y = 371;
+            else {
+                alert("You win!");
+                this.y = 371;
+                count = 0;
+            }
             break;
         case "right":
             if (this.x < 400)
@@ -83,7 +89,7 @@ Player.prototype.update = function(dt) {
                 this.y = this.y + movey;
             break;
     };
-    console.log(`${this.x}, ${this.y}`)
+//    console.log(`${this.x}, ${this.y}`)
 };
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
