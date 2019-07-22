@@ -9,11 +9,8 @@ let Enemy = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    let min = 40, max = 240; // tune these variables for upper / lower limits
     this.sprite = 'images/enemy-bug.png';
     this.x = 0;
-//    this.y = Math.random()*(max-min+1)+min;
-//    let firstRow = 60, secondRow = 140, thirdRow = 220;
     let rowY = [60, 140, 220]
     let rowNum = Math.ceil(Math.random()*3 - 1);
 //    if (rowNum == 3) rowNum--;
@@ -30,6 +27,9 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x = this.x + dt * this.speed;
+    if (this.x > 500) {
+        allEnemies.splice(allEnemies.indexOf(this), 1); // to save memory
+    }
 };
 
 // Draw the enemy on the screen, required method for game
